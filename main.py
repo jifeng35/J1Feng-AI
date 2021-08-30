@@ -2,6 +2,7 @@ from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 from sklearn import feature_extraction
 from sklearn.feature_extraction import DictVectorizer
+from sklearn.feature_extraction.text import CountVectorizer
 
 
 def load():
@@ -21,12 +22,26 @@ def dict_demo():
     data_dict = [{"City": "Beijing", "Temperature": 20},
                  {"City": "Shanghai", "Temperature": 30},
                  {"City": "Shenzhen", "Temperature": 25}]
-    transfer = DictVectorizer(sparse=False)  # 默认返回稀疏矩阵,省略0的存储空间
+    transfer = DictVectorizer(sparse=False)
+    # 默认返回稀疏矩阵,省略0的存储空间 sparse=False来转换为普通矩阵
     new_data = transfer.fit_transform(data_dict)
     print(data_dict)
     print(new_data)
+    print("特征名字为:", transfer.get_feature_names())
+    return None
+
+
+def txt_demo():  # 单词作为特征
+    # test_txt = ["life is in your hand, and so do the tomorrow ,which is also in your hand!"]
+    test_txt = ["我爱在北京邮电里面坐牢", "乔建永也在里面坐牢"]
+    transfer = CountVectorizer()
+    new_txt = transfer.fit_transform(test_txt)
+    print("处理后的数据为:\n", new_txt)
+    print("处理后的数据为:\n", new_txt.toarray())
+    print("处理后的数据特征名称为:\n", transfer.get_feature_names())
+    return None
 
 
 if __name__ == '__main__':
-    load()
-    dict_demo()
+    # load() dict_demo()
+    txt_demo()
