@@ -3,6 +3,7 @@ from sklearn.model_selection import train_test_split
 from sklearn import feature_extraction
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.feature_extraction.text import CountVectorizer
+import jieba
 
 
 def load():
@@ -31,10 +32,18 @@ def dict_demo():
     return None
 
 
+def divide():
+    text = "我是你的父亲"
+    text = " ".join(list(jieba.cut(text)))
+    print(text)
+    print(type(text))
+
+
 def txt_demo():  # 单词作为特征
     # test_txt = ["life is in your hand, and so do the tomorrow ,which is also in your hand!"]
-    test_txt = ["我爱在北京邮电里面坐牢", "乔建永也在里面坐牢"]
-    transfer = CountVectorizer()
+    test_txt = ["我爱在北京邮电大学里面坐牢", "乔建永也在里面坐牢"]
+
+    transfer = CountVectorizer(stop_words=["里面", "在里面"])
     new_txt = transfer.fit_transform(test_txt)
     print("处理后的数据为:\n", new_txt)
     print("处理后的数据为:\n", new_txt.toarray())
@@ -43,5 +52,7 @@ def txt_demo():  # 单词作为特征
 
 
 if __name__ == '__main__':
-    # load() dict_demo()
-    txt_demo()
+    # load()
+    # dict_demo()
+    # txt_demo()
+    divide()
