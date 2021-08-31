@@ -2,6 +2,7 @@ from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 from sklearn import feature_extraction
 from sklearn.feature_extraction import DictVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_extraction.text import CountVectorizer
 import jieba
 
@@ -32,18 +33,37 @@ def dict_demo():
     return None
 
 
-def divide():
-    text = "我是你的父亲"
+def divide(m_input):
+    text = m_input
     text = " ".join(list(jieba.cut(text)))
     print(text)
-    print(type(text))
+    #  print(type(text))
+    return text
 
 
-def txt_demo():  # 单词作为特征
+def divide2(input_1):
+    my_data = input_1
+    my_data_0 = []
+    for sentence in my_data:
+        my_data_0.append(divide(sentence))
+    print(my_data_0)
+    return my_data_0
+
+
+def txt_demo(input_0):  # 单词作为特征
     # test_txt = ["life is in your hand, and so do the tomorrow ,which is also in your hand!"]
-    test_txt = ["我爱在北京邮电大学里面坐牢", "乔建永也在里面坐牢"]
-
+    test_txt = divide2(input_0)
     transfer = CountVectorizer(stop_words=["里面", "在里面"])
+    new_txt = transfer.fit_transform(test_txt)
+    print("处理后的数据为:\n", new_txt)
+    print("处理后的数据为:\n", new_txt.toarray())
+    print("处理后的数据特征名称为:\n", transfer.get_feature_names())
+    return None
+
+
+def tfidf_demo(input_2):
+    test_txt = divide2(input_2)
+    transfer = TfidfVectorizer()
     new_txt = transfer.fit_transform(test_txt)
     print("处理后的数据为:\n", new_txt)
     print("处理后的数据为:\n", new_txt.toarray())
@@ -55,4 +75,9 @@ if __name__ == '__main__':
     # load()
     # dict_demo()
     # txt_demo()
-    divide()
+    my_data_outside = ["如果拿望远镜去看别人，就会拿放大镜来看自己。",
+                       "读不在三更五鼓，功只怕一曝十寒。",
+                       "发光并非太阳的专利，你也可以发光。",
+                       "世上没有绝望的处境，只有对处境绝望的人。",
+                       "把活着的每一天看作生命的最后一天。"]
+    tfidf_demo(my_data_outside)
